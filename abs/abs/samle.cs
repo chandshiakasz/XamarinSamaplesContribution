@@ -25,94 +25,84 @@ namespace abs
 					},
 				},
 			};
-				
-//			var blueBox = new BoxView {
-//				Color = Color.Blue
-//			};
-//
-//			var yellowBox = new BoxView {
-//
-//				Color = Color.Yellow
-//
-//			};
-//
-//			var purpleBox = new BoxView {
-//
-//				Color = Color.Purple
-//
-//			};
-//
-//			var greenBox = new BoxView {
-//
-//				Color = Color.Green
-//
-//			};
+
+			var greenBox = new StackLayout 
+			{
+				Padding = 10,
+				HeightRequest = 500,
+				//WidthRequest = 1000,
+				BackgroundColor = Color.Green,
+				Children={
+					new Label{
+						Text="Low to High",
+						TextColor=Color.White,
+					},
+					new Label{
+						Text="High to low",
+						TextColor=Color.White,
+					},
+				},
+			};
 
 			AbsoluteLayout.SetLayoutFlags(redBox, AbsoluteLayoutFlags.All);
 
 			AbsoluteLayout.SetLayoutBounds(redBox, new Rectangle(0.99,0.00,0.25,0.25));
 			//developers comments
-			//rectangle(it moves left right , ti moves top , bottom,size,size)
-//			AbsoluteLayout.SetLayoutFlags(blueBox, AbsoluteLayoutFlags.All);
-//
-//			AbsoluteLayout.SetLayoutBounds(blueBox, new Rectangle(0.15, 0.15, 0.25, 0.25));
+			//rectangle(it moves left right , ti moves top , bottom,width percentage,height percentage)
 
-//			AbsoluteLayout.SetLayoutFlags(yellowBox, AbsoluteLayoutFlags.All);
-//
-//			AbsoluteLayout.SetLayoutBounds(yellowBox, new Rectangle(0.30, 0.30, 0.25,
-//
-//				0.25));
+			AbsoluteLayout.SetLayoutFlags(greenBox, AbsoluteLayoutFlags.All);
 
-//			AbsoluteLayout.SetLayoutFlags(purpleBox, AbsoluteLayoutFlags.All);
-//
-//			AbsoluteLayout.SetLayoutBounds(purpleBox, new Rectangle(0.45, 0.45, 0.25,
-//
-//				0.25));
-
-//			AbsoluteLayout.SetLayoutFlags(greenBox, AbsoluteLayoutFlags.All);
-//
-//			AbsoluteLayout.SetLayoutBounds(greenBox, new Rectangle(0.60, 0.60, 0.25,
-//
-//				0.25));
-
-			var absolute = new AbsoluteLayout 
+			AbsoluteLayout.SetLayoutBounds(greenBox, new Rectangle(0.50,0.50,0.35,0.25));
+		
+			var absoluteSettings = new AbsoluteLayout 
 			{
 				IsVisible =false,
 				Children = {
 					redBox,
-					//blueBox, yellowBox, purpleBox, greenBox
 				}
 			};
 
-			var search = new ToolbarItem { 
+			var absoluteActionSettings = new AbsoluteLayout 
+			{
+				IsVisible =false,
+				Children = {
+					greenBox,
+				}
+			};
+
+			var settings = new ToolbarItem { 
 				Text = "settings",
 				//Icon = "search.png",
 				Command = new Command (() => {
-					//searchBox.Text = string.Empty;
-					absolute.IsVisible = !absolute.IsVisible;
+					absoluteSettings.IsVisible = !absoluteSettings.IsVisible;
+					absoluteActionSettings.IsVisible=false;
+
 				}),
 			};
-			ToolbarItems.Add (search);
-//
-//			var btn = new Button{
-//				Text = "settings"
-//			};
-//
-//			btn.Clicked+= (sender, e) => {
-//				absolute.IsVisible = !absolute.IsVisible;
-//			};
+			ToolbarItems.Add (settings);
+
+			var settingsAction = new ToolbarItem { 
+				Text = "setAction",
+				Command = new Command (() => {
+					absoluteActionSettings.IsVisible = !absoluteActionSettings.IsVisible;
+					absoluteSettings.IsVisible=false;
+				}),
+			};
+			ToolbarItems.Add (settingsAction);
+
 			var stack = new StackLayout {
 				BackgroundColor = Color.Aqua,
 				Children=
 				{
-					//btn,
-					absolute
+					absoluteSettings,
+					absoluteActionSettings
 				},	
 			};
 
 			var tap = new TapGestureRecognizer ();
 			tap.Tapped += (sender, e) => {
-				absolute.IsVisible=false;
+				absoluteSettings.IsVisible=false;
+				absoluteActionSettings.IsVisible=false;
 			};
 			stack.GestureRecognizers.Add (tap);
 			Content = stack;
